@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+    xsi:schemaLocation="http://www.springframework.org/schema/beans   
+     http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+	<bean id = "propertyConfiguer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:account-email.properties"/>
+	</bean>
+	<!-- 使用126邮箱服务器发送，需要将占位符扫描路径修改为classpath:account-email.properties -->
+	<!--      <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+     	<property name="protocol" value="${email.protocol}"/>
+     	<property name="host" value="${email.host}"/>
+     	<property name="port" value="${email.port}"/>
+     	<property name="username" value="${email.username}"/>
+     	<property name="password" value="${email.password}"/>
+     	<property name="javaMailProperties">
+     		<props>
+     		   	<prop key="mail.smtps.auth">true</prop>  
+               	<prop key="mail.smtp.ssl.enable">true</prop>  
+            	<prop key="mail.transport.protocol">smtps</prop>
+     		</props>
+     	</property>
+     </bean> -->
+
+	<!-- 使用greenmail邮箱服务器发送，需要将占位符扫描路径修改为classpath:account-email-test.properties -->
+	<bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="protocol" value="${email.protocol}"/>
+		<property name="host" value="${email.host}"/>
+		<property name="port" value="${email.port}"/>
+		<property name="username" value="${email.username}"/>
+		<property name="password" value="${email.password}"/>
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtps.auth">true</prop>  
+				<prop key="mail.smtp.ssl.enable">true</prop>  
+				<prop key="mail.transport.protocol">smtp</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="accountEmailService" class="com.yahy.account.email.impl.AccountEmailServiceImpl">
+		<property name="javaMailSender" ref="javaMailSender"/>
+		<property name="systemEmail" value="${email.systemEmail}"/>
+	</bean>
+</beans>  
